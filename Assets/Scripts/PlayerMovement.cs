@@ -33,20 +33,17 @@ public class PlayerMovement : MonoBehaviour {
         moveX = Input.GetAxis("Horizontal");
         if (Input.GetButtonDown("Jump"))
             Jump();
-        if (Input.GetKeyDown("s") && IsDucking == false)
+        if (Input.GetKeyDown("s") || Input.GetKeyDown("down") && IsDucking == false)
         {
             Duck();
             IsDucking = true;
         }
-        else if (Input.GetKeyUp("s") && IsDucking == true)
+        else if (Input.GetKeyUp("s") || Input.GetKeyUp("down") && IsDucking == true)
         {
             NotDuck();
             IsDucking = false;
         }
-            
-            
-       
-
+   
         //Flipping charater to face correct way
         if (moveX < 0.0f && facing == false)
             FlipPlayer();
@@ -65,6 +62,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         Vector2 duckScale = Player.transform.localScale;
         duckScale.y += 1;
+
         transform.localScale = duckScale;
     }
     void Duck()
