@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour {
     public float playerSpeed = 10;
     private bool facing = false;
     public float playerJumpPower = 1250;
+    public bool hasJumped = false;
     private float moveX;
 
     private bool IsDucking = false;
@@ -31,22 +32,19 @@ public class PlayerMovement : MonoBehaviour {
     {
         //Controls
         moveX = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && hasJumped == false)
             Jump();
-        if (Input.GetKeyDown("s") && IsDucking == false)
+        if (Input.GetKeyDown("s") || Input.GetKeyDown("down") && IsDucking == false)
         {
             Duck();
             IsDucking = true;
         }
-        else if (Input.GetKeyUp("s") && IsDucking == true)
+        else if (Input.GetKeyUp("s") || Input.GetKeyUp("down") && IsDucking == true)
         {
             NotDuck();
             IsDucking = false;
         }
-            
-            
-       
-
+   
         //Flipping charater to face correct way
         if (moveX < 0.0f && facing == false)
             FlipPlayer();
@@ -60,11 +58,13 @@ public class PlayerMovement : MonoBehaviour {
     void Jump()
     {
         PlayerBody.AddForce(Vector2.up * playerJumpPower);
+        hasJumped = true;
     }
     void NotDuck()
     {
         Vector2 duckScale = Player.transform.localScale;
         duckScale.y += 1;
+
         transform.localScale = duckScale;
     }
     void Duck()
@@ -80,5 +80,13 @@ public class PlayerMovement : MonoBehaviour {
         Vector2 LocalScale = Player.transform.localScale;
         LocalScale.x *= -1;
         transform.localScale = LocalScale;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "floor" && hasJumped == true)
+        {
+            hasJumped = false;
+        }
     }
 }
