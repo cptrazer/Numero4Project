@@ -6,20 +6,24 @@ public class PowerUpScript : MonoBehaviour {
     
     [SerializeField]
     GameObject slipperyOil;
+    public int amountOfOil = 0;
+    float TimePassed = 0;
 
-	// Use this for initialization
-	void Start () {
-		
+    // Use this for initialization
+    void Start () {
+		if(this.name == "Oil(Clone)")
+        {
+            amountOfOil++;
+        }
 	}
 
     private void Update()
     {
-        /*
-        if(this.name == "Oil (Clone)")
+        TimePassed += Time.deltaTime;
+        if(TimePassed >= 10 && this.gameObject.name == "Oil Track(Clone)")
         {
-            this.transform.localScale = new Vector3(10 + Mathf.Sin(Time.deltaTime),10,10);
+            Destroy(this.gameObject);
         }
-        */
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -27,20 +31,13 @@ public class PowerUpScript : MonoBehaviour {
        if(collision.gameObject.tag == "floor" && this.tag == "Oil")
         {
             Instantiate(slipperyOil, new Vector3(this.transform.position.x, this.transform.position.y - 1f, -1), Quaternion.identity);
+            amountOfOil--;
             Destroy(this.gameObject);
-        }
-
-        if (collision.gameObject.tag == "Slippery floor" && this.tag == "Slippery floor")
-        {
-            Debug.Log("Fuse");
-            Fuse(collision);
         }
     }
 
-    void Fuse(Collision2D collision)
+    private void OnTriggerEnter(Collider other)
     {
-        this.transform.Translate(Vector3.right * ((collision.transform.position.x - this.transform.position.x)/2));
-        this.gameObject.transform.localScale += collision.transform.localScale;
-        Destroy(collision.gameObject);
+        //Change friction
     }
 }
