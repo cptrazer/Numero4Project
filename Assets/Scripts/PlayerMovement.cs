@@ -4,36 +4,70 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-    public float playerSpeed = 10;
-    private bool facing = false;
-    public float playerJumpPower = 1250;
-    public bool hasJumped = false;
-    private float moveX;
-
-    private bool IsDucking = false;
-
-    private Rigidbody2D PlayerBody;
-    
-
     [SerializeField]
     private GameObject Player;
 
-    private void Awake()
+    Controller controller;
+ 
+    private bool facing = false;
+
+    //Maximum Jump Height
+    public float jumpHeight = 4f;
+    public float timeToJumpApex = 0.5f;
+    public float playerSpeed = 8;
+    public float accelerationTimeAirborne = 1f;
+    public float acceleraationTimeGrounded = 0.2f;
+
+
+    float gravity;
+    float jumpVelocity;
+    Vector3 velocity;
+    float velocityXSmooth;
+
+    private void Awake()    
     {
-        PlayerBody = Player.GetComponent<Rigidbody2D>();
+        controller = GetComponent<Controller>();
     }
 
+     void Start()
+    {
+
+        gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        print("Gravity " + gravity + "Jump Velocity " + jumpVelocity);
+
+    }
 
     void Update () {
         PlayerMoves();
-	}
+
+    }
 
     void PlayerMoves()
     {
+        //Check whether there is ground below or not. Stops the gravity from accumilating 
+        if (controller.collisionsBools.above || controller.collisionsBools.below)
+        {
+            velocity.y = 0;
+        }
+
         //Controls
-        moveX = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump") && hasJumped == false)
-            Jump();
+        //Left Right movement
+        Vector2 move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        if (Input.GetKeyDown(KeyCode.Space) && controller.collisionsBools.below)
+        {
+            velocity.y = jumpVelocity;
+        }
+     
+        float targetVelocity = move.x * playerSpeed;
+        //acceleration
+        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocity, ref velocityXSmooth, (controller.collisionsBools.below) ? acceleraationTimeGrounded : accelerationTimeAirborne);
+        //Gravity
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+     
+        /*
         if (Input.GetKeyDown("s") || Input.GetKeyDown("down") && IsDucking == false)
         {
             Duck();
@@ -44,22 +78,21 @@ public class PlayerMovement : MonoBehaviour {
             NotDuck();
             IsDucking = false;
         }
-   
-        //Flipping charater to face correct way
-        if (moveX < 0.0f && facing == false)
-            FlipPlayer();
-        if (moveX > 0.0f && facing == true)
-            FlipPlayer();
+        **/
 
-        //Phyiscs
-        Player.GetComponent<Rigidbody2D>().velocity = new Vector2(moveX * playerSpeed, PlayerBody.velocity.y);
+        if(targetVelocity < 0.0f && facing == false)
+        {
+            FlipPlayer();
+        }
+        else if(targetVelocity > 0.0f && facing == true)
+        {
+            FlipPlayer();
+        }
+
+
     }
 
-    void Jump()
-    {
-        PlayerBody.AddForce(Vector2.up * playerJumpPower);
-        hasJumped = true;
-    }
+
     void NotDuck()
     {
         Vector2 duckScale = Player.transform.localScale;
@@ -80,13 +113,5 @@ public class PlayerMovement : MonoBehaviour {
         Vector2 LocalScale = Player.transform.localScale;
         LocalScale.x *= -1;
         transform.localScale = LocalScale;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "floor" && hasJumped == true)
-        {
-            hasJumped = false;
-        }
     }
 }
