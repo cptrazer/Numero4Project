@@ -10,14 +10,29 @@ public class PlayerMovement : MonoBehaviour {
     Controller controller;
  
     private bool facing = false;
-
+    public float angle = 0;
     //Maximum Jump Height
     public float jumpHeight = 4f;
     public float timeToJumpApex = 0.5f;
     public float playerSpeed = 8;
     public float accelerationTimeAirborne = 1f;
     public float acceleraationTimeGrounded = 0.2f;
+    public float amountOfWater = 0;
+    public float amountOfOil = 0;
 
+    [SerializeField]
+    string currentPowerUp = "none";
+    [SerializeField]
+    GameObject waterDrop;
+    [SerializeField]
+    GameObject oilDrop;
+    [SerializeField]
+    Material colorWheel;
+
+    string[] powers = { "none", "Fire", "Water", "Oil", "Vine" };
+    int currentPowerIndex = 0;
+
+    Vector3 dir = Vector3.zero;
 
     float gravity;
     float jumpVelocity;
@@ -40,7 +55,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () {
         PlayerMoves();
-
+        CalculateAngle();
     }
 
     void PlayerMoves()
@@ -58,6 +73,65 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space) && controller.collisionsBools.below)
         {
             velocity.y = jumpVelocity;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            currentPowerIndex--;
+            if(currentPowerIndex < 0)
+            {
+                currentPowerIndex = powers.Length - 1;
+            }
+            currentPowerUp = powers[currentPowerIndex];
+            if(currentPowerUp == "none")
+            {
+                colorWheel.color = Color.white;
+            }
+            else if(currentPowerUp == "Fire")
+            {
+                colorWheel.color = Color.red;
+            }
+            else if(currentPowerUp == "Water")
+            {
+                colorWheel.color = Color.blue;
+            }
+            else if(currentPowerUp == "Oil")
+            {
+                colorWheel.color = Color.yellow;
+            }
+            else//when "Vine"
+            {
+                colorWheel.color = Color.green;
+            }
+        }
+        else if(Input.GetKeyDown(KeyCode.E))
+        {
+            currentPowerIndex++;
+            if(currentPowerIndex > powers.Length - 1)
+            {
+                currentPowerIndex = 0;
+            }
+            currentPowerUp = powers[currentPowerIndex];
+            if (currentPowerUp == "none")
+            {
+                colorWheel.color = Color.white;
+            }
+            else if (currentPowerUp == "Fire")
+            {
+                colorWheel.color = Color.red;
+            }
+            else if (currentPowerUp == "Water")
+            {
+                colorWheel.color = Color.blue;
+            }
+            else if (currentPowerUp == "Oil")
+            {
+                colorWheel.color = Color.yellow;
+            }
+            else//when "Vine"
+            {
+                colorWheel.color = Color.green;
+            }
         }
      
         float targetVelocity = move.x * playerSpeed;
@@ -113,5 +187,47 @@ public class PlayerMovement : MonoBehaviour {
         Vector2 LocalScale = Player.transform.localScale;
         LocalScale.x *= -1;
         transform.localScale = LocalScale;
+    }
+
+
+    public void CalculateAngle()
+    {
+        Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
+
+        dir = mousecoordinate.origin - transform.position;
+        angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        Debug.Log(angle);
+    }
+
+    private void OnMouseDown()
+    {
+        if(currentPowerUp == "Fire")
+        {
+            //thrust using fire into calculated angle
+            float force = 0;
+            velocity.y = Mathf.Sin(angle) * force;
+            velocity.x = Mathf.Cos(angle) * force;
+        }
+        else if(currentPowerUp == "Water")
+        {
+            //shoot Water in calculated angle
+            float shootForce = 0; // needs to be tweaked
+            GameObject projectile = Instantiate(waterDrop);
+            projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
+            amountOfWater++;
+        }
+        else if(currentPowerUp == "Oil")
+        {
+            //shoot Oil in calculated angle
+            float shootForce = 0; // needs to be tweaked
+            GameObject projectile = Instantiate(oilDrop);
+            projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
+            amountOfOil++;
+        }
+        else if(currentPowerUp == "Vine")
+        {
+            //shoot vines in calculated angle
+        }
     }
 }

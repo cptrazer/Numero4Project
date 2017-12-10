@@ -19,16 +19,6 @@ public class PowerUpScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		if(this.name == "Oil(Clone)")
-        {
-            amountOfOil++;
-        }
-        else if(this.name == "Water(Clone)")
-        {
-            amountOfWater++;
-        }
-
-      
 	}
 
     private void Update()
@@ -37,12 +27,12 @@ public class PowerUpScript : MonoBehaviour {
         if(TimePassed >= 10 && this.gameObject.name == "Oil Track(Clone)")
         {
             Destroy(this.gameObject);
-            amountOfOil--;
+            Player.GetComponent<PlayerMovement>().amountOfOil--;
         }
         else if(TimePassed >=10 && this.gameObject.name == "Frozen Ground(Clone)")
         {
             Destroy(this.gameObject);
-            amountOfWater--;
+            Player.GetComponent<PlayerMovement>().amountOfWater--;
 
         }
     }
