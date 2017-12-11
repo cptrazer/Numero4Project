@@ -8,9 +8,11 @@ public class PlayerMovement : MonoBehaviour {
     private GameObject Player;
 
     Controller controller;
- 
-    private bool facing = false;
+    
     public float angle = 0;
+    public Vector3 dir = Vector3.zero;
+
+    private bool facing = false;
     //Maximum Jump Height
     public float jumpHeight = 4f;
     public float timeToJumpApex = 0.5f;
@@ -19,24 +21,18 @@ public class PlayerMovement : MonoBehaviour {
     public float acceleraationTimeGrounded = 0.2f;
     public float amountOfWater = 0;
     public float amountOfOil = 0;
-
-    [SerializeField]
-    string currentPowerUp = "none";
-    [SerializeField]
-    GameObject waterDrop;
-    [SerializeField]
-    GameObject oilDrop;
+    
+    public string currentPowerUp = "none";
     [SerializeField]
     Material colorWheel;
 
     string[] powers = { "none", "Fire", "Water", "Oil", "Vine" };
     int currentPowerIndex = 0;
 
-    Vector3 dir = Vector3.zero;
 
     float gravity;
     float jumpVelocity;
-    Vector3 velocity;
+    public Vector3 velocity;
     float velocityXSmooth;
 
     private void Awake()    
@@ -55,6 +51,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () {
         PlayerMoves();
+
         CalculateAngle();
     }
 
@@ -189,7 +186,6 @@ public class PlayerMovement : MonoBehaviour {
         transform.localScale = LocalScale;
     }
 
-
     public void CalculateAngle()
     {
         Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
@@ -197,37 +193,6 @@ public class PlayerMovement : MonoBehaviour {
         dir = mousecoordinate.origin - transform.position;
         angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        Debug.Log(angle);
-    }
-
-    private void OnMouseDown()
-    {
-        if(currentPowerUp == "Fire")
-        {
-            //thrust using fire into calculated angle
-            float force = 0;
-            velocity.y = Mathf.Sin(angle) * force;
-            velocity.x = Mathf.Cos(angle) * force;
-        }
-        else if(currentPowerUp == "Water")
-        {
-            //shoot Water in calculated angle
-            float shootForce = 0; // needs to be tweaked
-            GameObject projectile = Instantiate(waterDrop);
-            projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
-            amountOfWater++;
-        }
-        else if(currentPowerUp == "Oil")
-        {
-            //shoot Oil in calculated angle
-            float shootForce = 0; // needs to be tweaked
-            GameObject projectile = Instantiate(oilDrop);
-            projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
-            amountOfOil++;
-        }
-        else if(currentPowerUp == "Vine")
-        {
-            //shoot vines in calculated angle
-        }
+        //Debug.Log(angle);
     }
 }

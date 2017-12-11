@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\ColorWheel.cs" />
+    <Compile Include="Assets\PowerUpHandler.cs" />
     <Compile Include="Assets\Scripts\CameraSys.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
