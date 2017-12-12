@@ -54,12 +54,10 @@ public class PlayerMovement : MonoBehaviour {
 
     }
 
-    void Update () {
-        PlayerMoves();
-
+    void Update ()
+    {
         CalculateAngle();
-
-
+        PlayerMoves();
     }
 
     void PlayerMoves()
@@ -175,20 +173,26 @@ public class PlayerMovement : MonoBehaviour {
                 Fire();
 
             }
-            else if (currentPowerUp == "Water")
+            else if (currentPowerUp == "Water" && amountOfWater < 20)
             {
                 //shoot Water in calculated angle
-                float shootForce = 0; // needs to be tweaked
-                GameObject projectile = Instantiate(waterDrop);
+                Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
+                dir = mousecoordinate.origin - transform.position;
+
+                float shootForce = 18; // needs to be tweaked
+                GameObject projectile = Instantiate(waterDrop, transform.position, Quaternion.identity);
                 projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
                 amountOfWater++;
                 Debug.Log(amountOfWater);
             }
-            else if (currentPowerUp == "Oil")
+            else if (currentPowerUp == "Oil" && amountOfOil < 20)
             {
                 //shoot Oil in calculated angle
-                float shootForce = 0; // needs to be tweaked
-                GameObject projectile = Instantiate(oilDrop);
+                Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
+                dir = mousecoordinate.origin - transform.position;
+
+                float shootForce = 18; // needs to be tweaked
+                GameObject projectile = Instantiate(oilDrop, transform.position, Quaternion.identity);
                 projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
                 amountOfOil++;
                 Debug.Log(amountOfOil);
@@ -227,6 +231,7 @@ public class PlayerMovement : MonoBehaviour {
     public void CalculateAngle()
     {
         Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
+        Debug.DrawLine(transform.position, mousecoordinate.origin, Color.red);
 
         dir = mousecoordinate.origin - transform.position;
         angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -234,8 +239,6 @@ public class PlayerMovement : MonoBehaviour {
         {
             angle += 360;
         }
-
-        //Debug.Log(angle);
     }
 
     void Fire()
@@ -248,7 +251,6 @@ public class PlayerMovement : MonoBehaviour {
 
         Debug.DrawRay(transform.position, -dir.normalized * jumpVelocity, Color.red, 3);
         velocity -= dir.normalized * jumpVelocity;
-//elocity.y -= gravity * 10;
 
         Debug.Log(Player.GetComponent<PlayerMovement>().velocity);
     }
