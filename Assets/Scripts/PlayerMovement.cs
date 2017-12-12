@@ -6,6 +6,10 @@ public class PlayerMovement : MonoBehaviour {
 
     [SerializeField]
     private GameObject Player;
+    [SerializeField]
+    GameObject waterDrop;
+    [SerializeField]
+    GameObject oilDrop;
 
     Controller controller;
     
@@ -21,7 +25,8 @@ public class PlayerMovement : MonoBehaviour {
     public float acceleraationTimeGrounded = 0.2f;
     public float amountOfWater = 0;
     public float amountOfOil = 0;
-    
+    public float force = 20;
+
     public string currentPowerUp = "none";
     [SerializeField]
     Material colorWheel;
@@ -53,16 +58,18 @@ public class PlayerMovement : MonoBehaviour {
         PlayerMoves();
 
         CalculateAngle();
+
+
     }
 
     void PlayerMoves()
     {
         //Check whether there is ground below or not. Stops the gravity from accumilating 
-        if (controller.collisionsBools.above || controller.collisionsBools.below)
+        
+        if ((controller.collisionsBools.above || controller.collisionsBools.below) && Input.GetButtonDown("Fire1") == false)
         {
             velocity.y = 0;
         }
-
         //Controls
         //Left Right movement
         Vector2 move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -133,6 +140,7 @@ public class PlayerMovement : MonoBehaviour {
      
         float targetVelocity = move.x * playerSpeed;
         //acceleration
+
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocity, ref velocityXSmooth, (controller.collisionsBools.below) ? acceleraationTimeGrounded : accelerationTimeAirborne);
         //Gravity
         velocity.y += gravity * Time.deltaTime;
@@ -160,6 +168,36 @@ public class PlayerMovement : MonoBehaviour {
             FlipPlayer();
         }
 
+        if (Input.GetButtonDown("Fire1") && controller.collisionsBools.below)
+        {
+            if (currentPowerUp == "Fire")
+            {
+                Fire();
+
+            }
+            else if (currentPowerUp == "Water")
+            {
+                //shoot Water in calculated angle
+                float shootForce = 0; // needs to be tweaked
+                GameObject projectile = Instantiate(waterDrop);
+                projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
+                amountOfWater++;
+                Debug.Log(amountOfWater);
+            }
+            else if (currentPowerUp == "Oil")
+            {
+                //shoot Oil in calculated angle
+                float shootForce = 0; // needs to be tweaked
+                GameObject projectile = Instantiate(oilDrop);
+                projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
+                amountOfOil++;
+                Debug.Log(amountOfOil);
+            }
+            else if (currentPowerUp == "Vine")
+            {
+                //shoot vines in calculated angle
+            }
+        }
 
     }
 
@@ -198,5 +236,20 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         //Debug.Log(angle);
+    }
+
+    void Fire()
+    {
+        
+        Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
+
+        dir = mousecoordinate.origin - transform.position;
+        dir.z = 0;
+
+        Debug.DrawRay(transform.position, -dir.normalized * jumpVelocity, Color.red, 3);
+        velocity -= dir.normalized * jumpVelocity;
+//elocity.y -= gravity * 10;
+
+        Debug.Log(Player.GetComponent<PlayerMovement>().velocity);
     }
 }
