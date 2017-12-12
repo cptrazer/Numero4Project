@@ -39,7 +39,7 @@ public class PowerUpHandler : MonoBehaviour {
             {
                 //thrust using fire into calculated angle
                 float force = 75;
-                if (angle>0)
+                if (angle => 180)
                 {
                     angle -= 180;
                 }
@@ -47,8 +47,8 @@ public class PowerUpHandler : MonoBehaviour {
                 {
                     angle += 180;
                 }
-                Player.GetComponent<PlayerMovement>().velocity.x += Mathf.Sin(angle) * force;
-                Player.GetComponent<PlayerMovement>().velocity.y += Mathf.Cos(angle) * force;
+                Player.GetComponent<PlayerMovement>().velocity.y += Mathf.Sin(angle) * force;
+                Player.GetComponent<PlayerMovement>().velocity.x += Mathf.Cos(angle) * force;
                 Debug.Log(Player.GetComponent<PlayerMovement>().velocity);
             }
             else if (currentPowerUp == "Water")

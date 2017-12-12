@@ -192,6 +192,10 @@ public class PlayerMovement : MonoBehaviour {
 
         dir = mousecoordinate.origin - transform.position;
         angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        if(angle < 0)
+        {
+            angle += 360;
+        }
 
         //Debug.Log(angle);
     }
