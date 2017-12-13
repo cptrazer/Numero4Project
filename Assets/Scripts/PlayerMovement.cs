@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField]
     GameObject oilDrop;
 
+
     Controller controller;
     
     public float angle = 0;
@@ -22,10 +23,11 @@ public class PlayerMovement : MonoBehaviour {
     public float timeToJumpApex = 0.5f;
     public float playerSpeed = 8;
     public float accelerationTimeAirborne = 1f;
-    public float acceleraationTimeGrounded = 0.2f;
+    public float accelerationTimeGrounded = 0.2f;
     public float amountOfWater = 0;
     public float amountOfOil = 0;
     public float force = 20;
+    float slippery = 0.2f;
 
     public string currentPowerUp = "none";
     [SerializeField]
@@ -58,6 +60,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         CalculateAngle();
         PlayerMoves();
+        accelerationTimeGrounded = slippery;
     }
 
     void PlayerMoves()
@@ -139,7 +142,7 @@ public class PlayerMovement : MonoBehaviour {
         float targetVelocity = move.x * playerSpeed;
         //acceleration
 
-        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocity, ref velocityXSmooth, (controller.collisionsBools.below) ? acceleraationTimeGrounded : accelerationTimeAirborne);
+        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocity, ref velocityXSmooth, (controller.collisionsBools.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
         //Gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
@@ -166,9 +169,9 @@ public class PlayerMovement : MonoBehaviour {
             FlipPlayer();
         }
 
-        if (Input.GetButtonDown("Fire1") && controller.collisionsBools.below)
+        if (Input.GetButtonDown("Fire1") )
         {
-            if (currentPowerUp == "Fire")
+            if (currentPowerUp == "Fire" && controller.collisionsBools.below)
             {
                 Fire();
 
@@ -178,22 +181,23 @@ public class PlayerMovement : MonoBehaviour {
                 //shoot Water in calculated angle
                 Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
                 dir = mousecoordinate.origin - transform.position;
+                dir.z = 0;
 
-                float shootForce = 18; // needs to be tweaked
+                float shootForce = 1000; // needs to be tweaked
                 GameObject projectile = Instantiate(waterDrop, transform.position, Quaternion.identity);
-                projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
+                projectile.GetComponent<Rigidbody2D>().AddForce(dir.normalized * shootForce);
                 amountOfWater++;
-                Debug.Log(amountOfWater);
             }
             else if (currentPowerUp == "Oil" && amountOfOil < 20)
             {
                 //shoot Oil in calculated angle
                 Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
                 dir = mousecoordinate.origin - transform.position;
+                dir.z = 0;
 
-                float shootForce = 18; // needs to be tweaked
+                float shootForce = 1000; // needs to be tweaked
                 GameObject projectile = Instantiate(oilDrop, transform.position, Quaternion.identity);
-                projectile.GetComponent<Rigidbody2D>().AddForce(dir * shootForce);
+                projectile.GetComponent<Rigidbody2D>().AddForce(dir.normalized * shootForce);
                 amountOfOil++;
                 Debug.Log(amountOfOil);
             }
@@ -253,5 +257,32 @@ public class PlayerMovement : MonoBehaviour {
         velocity -= dir.normalized * jumpVelocity;
 
         Debug.Log(Player.GetComponent<PlayerMovement>().velocity);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Slippery Surface" )
+        {
+            Debug.Log("SLIP");
+            
+            //Changes the acceleration speed
+            if (collision.gameObject.name == "Frozen Ground(Clone)")
+            {
+                slippery = 2f;
+            }
+            else if (collision.gameObject.name == "Oil Track(Clone)")
+            {
+                slippery = 3f;
+
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Slippery Surface")
+        {
+            slippery = 0.2f;
+        }
     }
 }

@@ -6,6 +6,11 @@ TagManager:
   tags:
   - floor
   - Oil
+  - Waterfall
+  - Water
+  - Slippery Surface
+  - Horizontal
+  - Vertical
   layers:
   - Default
   - TransparentFX

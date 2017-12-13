@@ -112,7 +112,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -139,7 +139,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d70921a00b2ef4badfbbfda993e36a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slipperySurface: {fileID: 1322370042682462}
-  amountOfOil: 2
-  amountOfWater: 2
-  Player: {fileID: 0}
+  slipperySurface: {fileID: 1895956953516624, guid: 2927c0b3a23e478418ceb8afcf6d0001,
+    type: 2}
