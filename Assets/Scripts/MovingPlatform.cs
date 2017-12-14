@@ -7,7 +7,7 @@ public class MovingPlatform : MonoBehaviour {
     public float outerEdge = 10;
     public float innerEdge = 0;
     public float speed = 10;
-    Vector3 dir;
+    public Vector3 dir;
     string currentEdge = "inner";
 
 	// Use this for initialization
@@ -16,13 +16,11 @@ public class MovingPlatform : MonoBehaviour {
         {
             innerEdge += transform.position.x;
             outerEdge += transform.position.x;
-            dir = Vector3.right;
         }
         else if(this.tag == "Vertical")
         {
             innerEdge += transform.position.y;
             outerEdge += transform.position.y;
-            dir = Vector3.up;
         }
 	}
 	
@@ -37,14 +35,49 @@ public class MovingPlatform : MonoBehaviour {
             {
                 currentEdge = "outer";
             }
+
+            if (currentEdge == "inner" && this.tag == "Vertical")
+            {
+
+                dir = Vector3.up;
+            }
+
+            if (currentEdge == "inner" && this.tag == "Horizontal")
+            {
+
+                dir = Vector3.right;
+            }
         }
         else
         {
-            transform.Translate(dir * Time.deltaTime * -speed);
+            transform.Translate(dir * Time.deltaTime * speed);
             if ((transform.position.x <= innerEdge && this.tag == "Horizontal") || (transform.position.y <= innerEdge && this.tag == "Vertical"))
             {
                 currentEdge = "inner";
             }
+
+
+            if (currentEdge == "outer" && this.tag == "Vertical")
+            {
+
+                dir = Vector3.down;
+            }
+
+            if (currentEdge == "outer" && this.tag == "Horizontal")
+            {
+
+                dir = Vector3.left;
+            }
         }
 	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        collision.transform.parent = transform;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        collision.transform.parent = null;
+    }
 }
