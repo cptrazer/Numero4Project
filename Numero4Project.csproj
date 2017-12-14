@@ -106,6 +106,7 @@
     <Compile Include="Assets\Scripts\ColorWheel.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\MovingPlatform.cs" />
+    <Compile Include="Assets\Scripts\PlayerAnimations.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\PowerUpScript.cs" />
   </ItemGroup>
