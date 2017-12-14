@@ -61,7 +61,7 @@ public class PowerUpScript : MonoBehaviour {
             Destroy(this.gameObject);
         }
 
-        if (collision.gameObject.tag == "WaterFall" && this.tag == "Oil" && collision.gameObject.tag != "Player")
+        if (collision.gameObject.tag != "floor" && this.tag == "Oil" && collision.gameObject.tag != "Player")
         {
             Player.GetComponent<PlayerMovement>().amountOfOil--;
 

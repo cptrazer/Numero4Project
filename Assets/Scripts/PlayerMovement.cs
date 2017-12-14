@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour {
     public float amountOfWater = 0;
     public float amountOfOil = 0;
     public float force = 20;
+    bool hasUsedFire = false;
     float slippery = 0.2f;
 
     public string currentPowerUp = "none";
@@ -67,9 +68,13 @@ public class PlayerMovement : MonoBehaviour {
     {
         //Check whether there is ground below or not. Stops the gravity from accumilating 
         
-        if ((controller.collisionsBools.above || controller.collisionsBools.below) && Input.GetButtonDown("Fire1") == false)
+        if (((controller.collisionsBools.above && velocity.y > 0) || (controller.collisionsBools.below && velocity.y < 0)) && Input.GetButtonDown("Fire1") == false)
         {
             velocity.y = 0;
+            if(controller.collisionsBools.below && hasUsedFire == true)
+            {
+                hasUsedFire = false;
+            }
         }
         //Controls
         //Left Right movement
@@ -171,10 +176,10 @@ public class PlayerMovement : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1") )
         {
-            if (currentPowerUp == "Fire" && controller.collisionsBools.below)
+            if (currentPowerUp == "Fire" && hasUsedFire == false)
             {
                 Fire();
-
+                hasUsedFire = true;
             }
             else if (currentPowerUp == "Water" && amountOfWater < 20)
             {
