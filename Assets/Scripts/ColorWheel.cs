@@ -10,7 +10,7 @@ public class ColorWheel : MonoBehaviour {
 
     void Start()
     {
-        Player = GameObject.Find("Player");
+        Player = GameObject.Find("PlayerController");
 
         offset = transform.position - Player.transform.position;
     }

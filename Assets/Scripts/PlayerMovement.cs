@@ -11,10 +11,10 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField]
     GameObject oilDrop;
 
-
-    Controller controller;
+    public Controller controller;
     
     public float angle = 0;
+    float currentAngle = 0;
     public Vector3 dir = Vector3.zero;
 
     private bool facing = false;

@@ -1,10 +1,16 @@
 fileFormatVersion: 2
 guid: c84e6f877cebc5d4bbd068efd9db54b0
-timeCreated: 1511624066
+timeCreated: 1515752210
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Player: {instanceID: 0}
+  - waterDrop: {instanceID: 0}
+  - oilDrop: {instanceID: 0}
+  - Arm: {fileID: 1498531210232398, guid: 24cd96955dcbdd548ad2e2e325ba758c, type: 2}
+  - controller: {instanceID: 0}
+  - colorWheel: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
