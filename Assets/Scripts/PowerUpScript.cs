@@ -16,7 +16,7 @@ public class PowerUpScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Player = GameObject.Find("Player");
+        Player = GameObject.Find("PlayerController");
         TimePassed = 0;
 	}
 
@@ -39,17 +39,9 @@ public class PowerUpScript : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.gameObject.tag == "floor" && this.tag == "Oil")
-        {
-            Instantiate(slipperySurface, new Vector3(this.transform.position.x, this.transform.position.y - 0.5f, -1), collision.gameObject.transform.rotation);
-
-            Destroy(this.gameObject);
-        }
-
-
         if (collision.gameObject.tag == "Waterfall" && this.tag == "Water")
         {
-            Instantiate(slipperySurface, new Vector3(this.transform.position.x, collision.transform.position.y + 2.6f, -1), collision.gameObject.transform.rotation);
+            Instantiate(slipperySurface, new Vector3(this.transform.position.x, collision.transform.position.y + 2.55f, 0), collision.gameObject.transform.rotation);
             print("hello iceman");
             Destroy(this.gameObject);
         }
@@ -57,13 +49,6 @@ public class PowerUpScript : MonoBehaviour {
         if (collision.gameObject.tag != "WaterFall" && this.tag == "Water" && collision.gameObject.tag != "Player")
         {
             Player.GetComponent<PlayerMovement>().amountOfWater--;
-
-            Destroy(this.gameObject);
-        }
-
-        if (collision.gameObject.tag != "floor" && this.tag == "Oil" && collision.gameObject.tag != "Player")
-        {
-            Player.GetComponent<PlayerMovement>().amountOfOil--;
 
             Destroy(this.gameObject);
         }

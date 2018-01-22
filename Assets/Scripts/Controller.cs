@@ -5,8 +5,11 @@ using UnityEngine;
 public class Controller : MonoBehaviour {
 
     public LayerMask CollisionMask;
+    public LayerMask DeathMask;
     BoxCollider2D collider2d;
-    RaycastOrigins raycastOrigins;
+
+    [HideInInspector]
+    public RaycastOrigins raycastOrigins;
 
     public int horizontalRays = 4;
     public int verticalRays = 4;
@@ -14,35 +17,46 @@ public class Controller : MonoBehaviour {
     public float maxClimbAngle = 80;
     public float maxDescendAngle = 75;
 
-    float horizontalRaySpace;
-    float verticalRaySpace;
-    const float skinWidth = 0.015f;
+    [HideInInspector]
+    public float horizontalRaySpace;
+    [HideInInspector]
+    public float verticalRaySpace;
+    [HideInInspector]
+    public  float skinWidth = 0.015f;
 
     public CollisionInfo collisionsBools;
 
 
-	void Start ()
+	public virtual void Start ()
     {
         collider2d = GetComponent<BoxCollider2D>();
-        CalculateRaycast();
+        collisionsBools.faceDirection = 1;
+        
     }
+    public virtual void Update()
+    {
+        CalculateRaycast();
 
+        Debug.Log("THIS IS FACE DIRECTION CONTROLLER " + collisionsBools.faceDirection);
+    }
 
     public void Move(Vector3 velocity)
     {
         UpdateRaycastOrigins();
         collisionsBools.Reset();
-
         collisionsBools.velocityOld = velocity;
+
+        if(velocity.x != 0)
+        {
+            collisionsBools.faceDirection = (int)Mathf.Sign(velocity.x);
+        }
         if(velocity.y < 0)
         {
             DescendSlope(ref velocity);
         }
 
-        if(velocity.x != 0)
-        {
-            HorizontalCollisions(ref velocity);
-        }
+        HorizontalCollisions(ref velocity);
+
         if(velocity.y != 0)
         {
             VerticalCollisions(ref velocity);
@@ -53,14 +67,26 @@ public class Controller : MonoBehaviour {
 
     void HorizontalCollisions(ref Vector3 velocity)
     {
-        float directionX = Mathf.Sign(velocity.x);
+        float directionX = collisionsBools.faceDirection;
         float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+
+        if(Mathf.Abs(velocity.x) < skinWidth)
+        {
+            rayLength = 2 * skinWidth;
+        }
 
         for (int i = 0; i < horizontalRays; i++)
         {
             Vector2 rayOrigins = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
             rayOrigins += Vector2.up * (horizontalRaySpace * i);
             RaycastHit2D hit2D = Physics2D.Raycast(rayOrigins, Vector2.right * directionX, rayLength, CollisionMask);
+            RaycastHit2D hitPoint = Physics2D.Raycast(rayOrigins, Vector2.right * directionX, rayLength, DeathMask);
+
+            if (hitPoint)
+            {
+                collisionsBools.death = true;
+                print("Player is Dead");
+            }
 
             Debug.DrawRay(rayOrigins,Vector2.right * directionX, Color.red);
 
@@ -117,8 +143,17 @@ public class Controller : MonoBehaviour {
             Vector2 rayOrigins = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
             rayOrigins += Vector2.right * (verticalRaySpace * i + velocity.x);
             RaycastHit2D hit2D = Physics2D.Raycast(rayOrigins, Vector2.up * directionY, rayLength, CollisionMask);
+            RaycastHit2D hitPoint = Physics2D.Raycast(rayOrigins, Vector2.right * directionY, rayLength, DeathMask);
 
             Debug.DrawRay(rayOrigins, Vector2.up * directionY, Color.red);
+
+            if (hitPoint)
+            {
+                collisionsBools.death = true;
+                Debug.Log(collisionsBools.death);
+
+                print("Player is Ded");
+            }
 
             if (hit2D)
             {
@@ -200,7 +235,7 @@ public class Controller : MonoBehaviour {
 
 
     //Updating the raycast origins so that it moves with the player
-    void UpdateRaycastOrigins()
+    public void UpdateRaycastOrigins()
     {
         Bounds bounds = collider2d.bounds;
         bounds.Expand(skinWidth * -2);
@@ -212,7 +247,7 @@ public class Controller : MonoBehaviour {
     }
 
     //Amount of rays and the calculation of the distance between the rays
-    void CalculateRaycast()
+    public void CalculateRaycast()
     {
         Bounds bounds = collider2d.bounds;
         bounds.Expand(skinWidth * -2);
@@ -225,7 +260,7 @@ public class Controller : MonoBehaviour {
     }
 
 
-    struct RaycastOrigins
+    public struct RaycastOrigins
     {
         public Vector2 topLeft, topRight;
         public Vector2 bottomLeft, bottomRight;
@@ -237,8 +272,10 @@ public class Controller : MonoBehaviour {
         public bool left, right;
         public bool climbingSlope;
         public bool descendingSlope;
+        public bool death;
         public float slopeAngle, slopeAngleOld;
         public Vector3 velocityOld;
+        public int faceDirection;
 
         public void Reset()
         {
@@ -246,6 +283,7 @@ public class Controller : MonoBehaviour {
             left = right = false;
             climbingSlope = false;
             descendingSlope = false;
+            death = false;
             slopeAngleOld = slopeAngle;
             slopeAngle = 0;
         }

@@ -22,13 +22,28 @@ public class PlayerAnimations : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space) && currentAnimation != "Jumping")
         {
             //jump animation plays once, then return to idle
-            PlayerAnimator.Play("Jumping");
+            PlayerAnimator.Play("Start_Jump");
             currentAnimation = "Jumping";
+        }
+        else if(Player.GetComponent<PlayerMovement>().velocity.y > 0 && !Player.GetComponent<PlayerMovement>().controller.collisionsBools.below)
+        {
+            PlayerAnimator.Play("Jump_Airtime");
+        }
+        else if(Player.GetComponent<PlayerMovement>().velocity.y < 0 && !Player.GetComponent<PlayerMovement>().controller.collisionsBools.below && Player.GetComponent<PlayerMovement>().currentPowerUp != "Glue")
+        {
+            PlayerAnimator.Play("Jump_Falling");
         }
         else if(Input.GetKeyDown(KeyCode.S) && currentAnimation != "Ducking" && currentAnimation != "Running" || ((Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))&& currentAnimation == "Ducked-Walk"))
         {
             //duck
-            PlayerAnimator.Play("Ducking");
+            if(currentAnimation != "Ducked-Walk")
+            {
+                PlayerAnimator.Play("Start_Duck");
+            }
+            else
+            {
+                PlayerAnimator.Play("Ducking");
+            }
             currentAnimation = "Ducking";
         }
         else if (Input.GetKey(KeyCode.S) && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A)) && currentAnimation == "Ducking")
@@ -40,7 +55,15 @@ public class PlayerAnimations : MonoBehaviour {
         else if (Input.GetKeyUp(KeyCode.S) || (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) && currentAnimation != "Idle" && currentAnimation != "Ducked-Walk")
         {
             //reverse duck?
-            PlayerAnimator.Play("Idle");
+            if(currentAnimation == "Ducking")
+            {
+                PlayerAnimator.Play("Stop_Duck");
+            }
+            else
+            {
+                PlayerAnimator.Play("Stop_Running");
+            }
+            
             currentAnimation = "Idle";
         }
         else if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) && Input.GetKey(KeyCode.S) == false && currentAnimation != "Running")
@@ -52,8 +75,13 @@ public class PlayerAnimations : MonoBehaviour {
         else if (Player.GetComponent<PlayerMovement>().velocity.y <= 0 && currentAnimation == "Jumping" && Player.GetComponent<PlayerMovement>().controller.collisionsBools.below)
         {
             //should become falling animation
-            PlayerAnimator.Play("Idle");
+            PlayerAnimator.Play("Jump_Getting_Up");
             currentAnimation = "Idle";
+        }
+        else if(!Player.GetComponent<PlayerMovement>().controller.collisionsBools.below && Player.GetComponent<PlayerMovement>().velocity.x == 0 && Player.GetComponent<PlayerMovement>().currentPowerUp == "Glue")
+        {
+            PlayerAnimator.Play("Hanging");
+            currentAnimation = "Hanging";
         }
         else if(Input.GetKey(KeyCode.Mouse0))
         {
