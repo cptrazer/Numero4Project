@@ -25,10 +25,6 @@ public class PlayerAnimations : MonoBehaviour {
             PlayerAnimator.Play("Start_Jump");
             currentAnimation = "Jumping";
         }
-        else if(Player.GetComponent<PlayerMovement>().velocity.y > 0 && !Player.GetComponent<PlayerMovement>().controller.collisionsBools.below)
-        {
-            PlayerAnimator.Play("Jump_Airtime");
-        }
         else if(Player.GetComponent<PlayerMovement>().velocity.y < 0 && !Player.GetComponent<PlayerMovement>().controller.collisionsBools.below && Player.GetComponent<PlayerMovement>().currentPowerUp != "Glue")
         {
             PlayerAnimator.Play("Jump_Falling");

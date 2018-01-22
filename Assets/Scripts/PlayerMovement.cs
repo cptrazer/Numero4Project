@@ -13,6 +13,17 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField]
     GameObject vineObject;
 
+    [SerializeField]
+    GameObject greyCharacter;
+    [SerializeField]
+    GameObject redCharacter;
+    [SerializeField]
+    GameObject blueCharacter;
+    [SerializeField]
+    GameObject greenCharacter;
+    [SerializeField]
+    GameObject yellowCharacter;
+
     GameObject vineSub;
 
     public Controller controller;
@@ -285,22 +296,47 @@ public class PlayerMovement : MonoBehaviour {
             if (currentPowerUp == "none")
             {
                 colorWheel.color = Color.white;
+                greyCharacter.SetActive(true);
+                greenCharacter.SetActive(false);
+                yellowCharacter.SetActive(false);
+                redCharacter.SetActive(false);
+                blueCharacter.SetActive(false);
             }
             else if (currentPowerUp == "Fire")
             {
                 colorWheel.color = Color.red;
+                greyCharacter.SetActive(false);
+                greenCharacter.SetActive(false);
+                yellowCharacter.SetActive(false);
+                redCharacter.SetActive(true);
+                blueCharacter.SetActive(false);
             }
             else if (currentPowerUp == "Water")
             {
                 colorWheel.color = Color.blue;
+                greyCharacter.SetActive(false);
+                greenCharacter.SetActive(false);
+                yellowCharacter.SetActive(false);
+                redCharacter.SetActive(false);
+                blueCharacter.SetActive(true);
             }
             else if (currentPowerUp == "Glue")
             {
                 colorWheel.color = Color.yellow;
+                greyCharacter.SetActive(false);
+                greenCharacter.SetActive(false);
+                yellowCharacter.SetActive(true);
+                redCharacter.SetActive(false);
+                blueCharacter.SetActive(false);
             }
             else//when "Vine"
             {
                 colorWheel.color = Color.green;
+                greyCharacter.SetActive(false);
+                greenCharacter.SetActive(true);
+                yellowCharacter.SetActive(false);
+                redCharacter.SetActive(false);
+                blueCharacter.SetActive(false);
             }
         }
         else if (Input.GetKeyDown(KeyCode.E))
@@ -314,22 +350,47 @@ public class PlayerMovement : MonoBehaviour {
             if (currentPowerUp == "none")
             {
                 colorWheel.color = Color.white;
+                greyCharacter.SetActive(true);
+                greenCharacter.SetActive(false);
+                yellowCharacter.SetActive(false);
+                redCharacter.SetActive(false);
+                blueCharacter.SetActive(false);
             }
             else if (currentPowerUp == "Fire")
             {
                 colorWheel.color = Color.red;
+                greyCharacter.SetActive(false);
+                greenCharacter.SetActive(false);
+                yellowCharacter.SetActive(false);
+                redCharacter.SetActive(true);
+                blueCharacter.SetActive(false);
             }
             else if (currentPowerUp == "Water")
             {
                 colorWheel.color = Color.blue;
+                greyCharacter.SetActive(false);
+                greenCharacter.SetActive(false);
+                yellowCharacter.SetActive(false);
+                redCharacter.SetActive(false);
+                blueCharacter.SetActive(true);
             }
             else if (currentPowerUp == "Glue")
             {
                 colorWheel.color = Color.yellow;
+                greyCharacter.SetActive(false);
+                greenCharacter.SetActive(false);
+                yellowCharacter.SetActive(true);
+                redCharacter.SetActive(false);
+                blueCharacter.SetActive(false);
             }
             else//when "Vine"
             {
                 colorWheel.color = Color.green;
+                greyCharacter.SetActive(false);
+                greenCharacter.SetActive(true);
+                yellowCharacter.SetActive(false);
+                redCharacter.SetActive(false);
+                blueCharacter.SetActive(false);
             }
         }
 
