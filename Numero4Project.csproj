@@ -104,7 +104,6 @@
     <Compile Include="Assets\Anima2D\Scripts\SpriteMeshInstance.cs" />
     <Compile Include="Assets\Scripts\CameraSys.cs" />
     <Compile Include="Assets\Scripts\CheckPoints.cs" />
-    <Compile Include="Assets\Scripts\ColorWheel.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\MovingPlatform.cs" />
     <Compile Include="Assets\Scripts\PlayerAnimations.cs" />

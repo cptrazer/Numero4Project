@@ -81,7 +81,7 @@ public class PlayerAnimations : MonoBehaviour {
         }
         else if(Input.GetKey(KeyCode.Mouse0))
         {
-            ArmAnimator.Play("Throwing");
+            ArmAnimator.Play("Throwing_no_IK");
         }
     }
 }

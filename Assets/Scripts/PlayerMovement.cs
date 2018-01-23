@@ -295,7 +295,6 @@ public class PlayerMovement : MonoBehaviour {
             currentPowerUp = powers[currentPowerIndex];
             if (currentPowerUp == "none")
             {
-                colorWheel.color = Color.white;
                 greyCharacter.SetActive(true);
                 greenCharacter.SetActive(false);
                 yellowCharacter.SetActive(false);
@@ -304,7 +303,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             else if (currentPowerUp == "Fire")
             {
-                colorWheel.color = Color.red;
                 greyCharacter.SetActive(false);
                 greenCharacter.SetActive(false);
                 yellowCharacter.SetActive(false);
@@ -313,7 +311,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             else if (currentPowerUp == "Water")
             {
-                colorWheel.color = Color.blue;
                 greyCharacter.SetActive(false);
                 greenCharacter.SetActive(false);
                 yellowCharacter.SetActive(false);
@@ -322,7 +319,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             else if (currentPowerUp == "Glue")
             {
-                colorWheel.color = Color.yellow;
                 greyCharacter.SetActive(false);
                 greenCharacter.SetActive(false);
                 yellowCharacter.SetActive(true);
@@ -331,7 +327,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             else//when "Vine"
             {
-                colorWheel.color = Color.green;
                 greyCharacter.SetActive(false);
                 greenCharacter.SetActive(true);
                 yellowCharacter.SetActive(false);
@@ -349,7 +344,6 @@ public class PlayerMovement : MonoBehaviour {
             currentPowerUp = powers[currentPowerIndex];
             if (currentPowerUp == "none")
             {
-                colorWheel.color = Color.white;
                 greyCharacter.SetActive(true);
                 greenCharacter.SetActive(false);
                 yellowCharacter.SetActive(false);
@@ -358,7 +352,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             else if (currentPowerUp == "Fire")
             {
-                colorWheel.color = Color.red;
                 greyCharacter.SetActive(false);
                 greenCharacter.SetActive(false);
                 yellowCharacter.SetActive(false);
@@ -367,7 +360,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             else if (currentPowerUp == "Water")
             {
-                colorWheel.color = Color.blue;
                 greyCharacter.SetActive(false);
                 greenCharacter.SetActive(false);
                 yellowCharacter.SetActive(false);
@@ -376,7 +368,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             else if (currentPowerUp == "Glue")
             {
-                colorWheel.color = Color.yellow;
                 greyCharacter.SetActive(false);
                 greenCharacter.SetActive(false);
                 yellowCharacter.SetActive(true);
@@ -385,7 +376,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             else//when "Vine"
             {
-                colorWheel.color = Color.green;
                 greyCharacter.SetActive(false);
                 greenCharacter.SetActive(true);
                 yellowCharacter.SetActive(false);
