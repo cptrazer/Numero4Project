@@ -79,7 +79,6 @@ public class PlayerMovement : MonoBehaviour {
 
      void Start()
     {
-
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         vineActivate = false;
@@ -101,7 +100,6 @@ public class PlayerMovement : MonoBehaviour {
         {
             Player.transform.position = StartPos;
         }
-
     }
 
     void PlayerMoves()
@@ -126,7 +124,6 @@ public class PlayerMovement : MonoBehaviour {
         if ((controller.collisionsBools.left || controller.collisionsBools.right) && !controller.collisionsBools.below && velocity.y < 0 && glueTime)
         {
             wallJump = true;
-
             if(velocity.y < -wallSlidingMax)
             {
                 velocity.y = -wallSlidingMax;
@@ -154,13 +151,11 @@ public class PlayerMovement : MonoBehaviour {
         if ((controller.collisionsBools.above && velocity.y > 0) || (controller.collisionsBools.below && velocity.y < 0))
         {
             velocity.y = 0;
-
             if(controller.collisionsBools.below && hasUsedFire == true)
             {
                 hasUsedFire = false;
             }
         }
-
 
         //Jumping system as well as WallJumping
         if (Input.GetKeyDown(KeyCode.Space))
@@ -191,7 +186,6 @@ public class PlayerMovement : MonoBehaviour {
                 velocity.y = jumpVelocity;
                 Debug.Log("CONTROLLER BELOW TRUE");
             }
-
         }
 
         //Gravity
@@ -233,7 +227,6 @@ public class PlayerMovement : MonoBehaviour {
         {
             glueTime = false;
         }
-        
     }
 
     void PowerUp()
@@ -261,7 +254,6 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
    
-    
     void FlipPlayer()
     {
         facing = !facing;
@@ -383,12 +375,10 @@ public class PlayerMovement : MonoBehaviour {
                 blueCharacter.SetActive(false);
             }
         }
-
     }
 
     void Fire()
     {
-        
         Ray mousecoordinate = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
 
         dir = mousecoordinate.origin - transform.position;
@@ -415,9 +405,7 @@ public class PlayerMovement : MonoBehaviour {
             {
                 slippery = 6f;
                 playerSpeed += 5f;
-
             }
-            
         }
     }
 

@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUpScript : MonoBehaviour {
-    
+    //script for the oil and water powerup-projectiles.
+
     [SerializeField]
     GameObject slipperySurface;
     float TimePassed = 0;
-
     PlayerMovement movementRef;
-    
     GameObject Player;
-
-   
-
-    // Use this for initialization
+    
     void Start () {
         Player = GameObject.Find("PlayerController");
         TimePassed = 0;
@@ -32,13 +28,11 @@ public class PowerUpScript : MonoBehaviour {
         {
             Destroy(this.gameObject);
             Player.GetComponent<PlayerMovement>().amountOfWater--;
-
         }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.gameObject.tag == "Waterfall" && this.tag == "Water")
         {
             Instantiate(slipperySurface, new Vector3(this.transform.position.x, collision.transform.position.y + 2.55f, 0), collision.gameObject.transform.rotation);
@@ -49,10 +43,7 @@ public class PowerUpScript : MonoBehaviour {
         if (collision.gameObject.tag != "WaterFall" && this.tag == "Water" && collision.gameObject.tag != "Player")
         {
             Player.GetComponent<PlayerMovement>().amountOfWater--;
-
             Destroy(this.gameObject);
         }
     }
-
-
 }

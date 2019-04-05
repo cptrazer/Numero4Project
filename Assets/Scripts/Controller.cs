@@ -7,36 +7,28 @@ public class Controller : MonoBehaviour {
     public LayerMask CollisionMask;
     public LayerMask DeathMask;
     BoxCollider2D collider2d;
-
     [HideInInspector]
     public RaycastOrigins raycastOrigins;
-
     public int horizontalRays = 4;
     public int verticalRays = 4;
-
     public float maxClimbAngle = 80;
     public float maxDescendAngle = 75;
-
     [HideInInspector]
     public float horizontalRaySpace;
     [HideInInspector]
     public float verticalRaySpace;
     [HideInInspector]
     public  float skinWidth = 0.015f;
-
     public CollisionInfo collisionsBools;
-
 
 	public virtual void Start ()
     {
         collider2d = GetComponent<BoxCollider2D>();
         collisionsBools.faceDirection = 1;
-        
     }
     public virtual void Update()
     {
         CalculateRaycast();
-
         Debug.Log("THIS IS FACE DIRECTION CONTROLLER " + collisionsBools.faceDirection);
     }
 
@@ -54,14 +46,12 @@ public class Controller : MonoBehaviour {
         {
             DescendSlope(ref velocity);
         }
-
         HorizontalCollisions(ref velocity);
 
         if(velocity.y != 0)
         {
             VerticalCollisions(ref velocity);
         }
-        
         transform.Translate(velocity);
     }
 
@@ -87,7 +77,6 @@ public class Controller : MonoBehaviour {
                 collisionsBools.death = true;
                 print("Player is Dead");
             }
-
             Debug.DrawRay(rayOrigins,Vector2.right * directionX, Color.red);
 
             if (hit2D)
@@ -115,20 +104,15 @@ public class Controller : MonoBehaviour {
                 {
                     velocity.x = (hit2D.distance - skinWidth) * directionX;
                     rayLength = hit2D.distance;
-
                     //Prevents stuttering when there's objects on a slope 
                     //Recalculates the velocity Y since it has not been recalculated normally
                     if (collisionsBools.climbingSlope)
                     {
                         velocity.y = Mathf.Tan(collisionsBools.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
                     }
-
                     collisionsBools.left = directionX == -1;
                     collisionsBools.right = directionX == 1;
-
-                   
                 }
-               
             }
         }
     }
@@ -151,8 +135,7 @@ public class Controller : MonoBehaviour {
             {
                 collisionsBools.death = true;
                 Debug.Log(collisionsBools.death);
-
-                print("Player is Ded");
+                print("Player is Dead");
             }
 
             if (hit2D)
@@ -221,11 +204,9 @@ public class Controller : MonoBehaviour {
                         float descendVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
                         velocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(velocity.x);
                         velocity.y -= descendVelocityY;
-
                         collisionsBools.slopeAngle = slopeAngle;
                         collisionsBools.descendingSlope = true;
                         collisionsBools.below = true;
-                           
                     }
                 }
             }
@@ -239,7 +220,6 @@ public class Controller : MonoBehaviour {
     {
         Bounds bounds = collider2d.bounds;
         bounds.Expand(skinWidth * -2);
-
         raycastOrigins.bottomLeft = new Vector2(bounds.min.x, bounds.min.y);
         raycastOrigins.bottomRight = new Vector2(bounds.max.x, bounds.min.y);
         raycastOrigins.topLeft = new Vector2(bounds.min.x, bounds.max.y);
@@ -251,10 +231,8 @@ public class Controller : MonoBehaviour {
     {
         Bounds bounds = collider2d.bounds;
         bounds.Expand(skinWidth * -2);
-
         horizontalRays = Mathf.Clamp(horizontalRays, 2, int.MaxValue);
         verticalRays = Mathf.Clamp(verticalRays, 2, int.MaxValue);
-
         horizontalRaySpace = bounds.size.y / (horizontalRays - 1);
         verticalRaySpace = bounds.size.x / (verticalRays - 1);
     }

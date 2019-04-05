@@ -59,7 +59,6 @@ public class PlayerAnimations : MonoBehaviour {
             {
                 PlayerAnimator.Play("Stop_Running");
             }
-            
             currentAnimation = "Idle";
         }
         else if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) && Input.GetKey(KeyCode.S) == false && currentAnimation != "Running")

@@ -9,13 +9,10 @@ public class CameraSys : MonoBehaviour {
     public float xMax;
     public float yMin;
     public float yMax;
-    
-
 	
 	void Start () {
         Player = GameObject.FindGameObjectWithTag("Player");
 	}
-	
 	
 	void LateUpdate () {
 

@@ -38,12 +38,8 @@ public class MovingPlatform : Controller
     {
         base.Update();
         UpdateRaycastOrigins();
-
-
         Vector3 velocity = dir * Time.deltaTime * speed;
-
         MovePassenger(velocity);
-
         if (currentEdge == "inner")
         {
             transform.Translate(velocity);
@@ -60,7 +56,6 @@ public class MovingPlatform : Controller
                 currentEdge = "inner";
             }
         }
-
     }
 
 
@@ -80,7 +75,6 @@ public class MovingPlatform : Controller
                 rayOrigins += Vector2.right * (verticalRaySpace * i);
                 RaycastHit2D hit2D = Physics2D.Raycast(rayOrigins, Vector2.up * directionY, rayLength, passengerMask);
                 //Debug.DrawRay(rayOrigins, Vector3.up * directionY, Color.green);
-
                 if (hit2D)
                 {
                     if (!movedPassengers.Contains(hit2D.transform))
@@ -88,7 +82,6 @@ public class MovingPlatform : Controller
                         movedPassengers.Add(hit2D.transform);
                         float pushX = (directionY == 1) ? velocity.x : 0;
                         float pushY = velocity.y - (hit2D.distance - skinWidth) * directionY;
-
                         hit2D.transform.Translate(new Vector3(pushX, pushY));
                     }
                 }
@@ -103,9 +96,7 @@ public class MovingPlatform : Controller
             {
                 Vector2 rayOrigins = raycastOrigins.topLeft + Vector2.right * (verticalRaySpace * i); 
                 RaycastHit2D hit2D = Physics2D.Raycast(rayOrigins, Vector2.up, rayLength, passengerMask);
-
                 Debug.DrawRay(rayOrigins, Vector3.up, Color.red);
-
                 if (hit2D)
                 {
                     Debug.Log("Player hit");
